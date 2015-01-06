@@ -18,7 +18,8 @@ var gameWorld = (function(){
     ctx: ctx,
     keysDown: {},
     tank : tank,
-    tankMissiles: []
+    tankMissiles: [],
+    citizens: []
   };
 
 }());
@@ -27,6 +28,7 @@ var gameWorld = (function(){
 window.onload = function() {
   createWorld();
   setMovementListeners();
+  generateCitizenInterval();
   updateCanvasLoop();
 };
 
@@ -57,23 +59,69 @@ function setMovementListeners() {
     }
   })
 }
+
+
 // so runs a function a rate 60 fps. we throw in the fillRect because it refreshes a new rectangle
 // every frame otherwise there would be a trace of the tank
 function updateCanvasLoop(){
   gameWorld.ctx.fillStyle = "rgb(0,0,0)";
   gameWorld.ctx.fillRect(0, 0, 800, 800);
-  var tank = gameWorld.tank
+  var tank = gameWorld.tank,
+      tempTankMissles = [],
+      tempCitizens = [];
 
   tank.move()
   tank.render()
 
-  for(var i = 0; i < gameWorld.tankMissiles.length; i++){
+
+  for(var i = 0, tankMissile; i < gameWorld.tankMissiles.length; i++){
     tankMissile = gameWorld.tankMissiles[i]
-    tankMissile.move()
-    tankMissile.render()
+    if(!checkHit(tankMissile)) {
+      tankMissile.move()
+      tankMissile.render()
+      tempTankMissles.push(tankMissile)
+    }
+
   }
-    requestAnimationFrame(updateCanvasLoop);
+  gameWorld.tankMissiles = tempTankMissles
+
+  for(var i = 0, citizen; i < gameWorld.citizens.length; i++) {
+    citizen = gameWorld.citizens[i]
+    if(citizen.hp>0){
+      citizen.move()
+      citizen.render()
+      tempCitizens.push(citizen)
+    }
+  }
+  gameWorld.citizens = tempCitizens
+  requestAnimationFrame(updateCanvasLoop);
 }
 
+// it checks to see if the missile hits the citizen.  If the citizen hp is zero in the above function,
+// it will stop rendering and moving the citizen. if the missile hits the citizen, it will stop moving and rendering the missile
+function checkHit(missile){
+  for(var i = 0, citizen; i < gameWorld.citizens.length; i++) {
+    citizen = gameWorld.citizens[i]
+    if(citizen.x <=(missile.x+10) && citizen.y <=(missile.y+30)
+      && missile.x <= (citizen.x+32) && missile.y <= (citizen.y + 32)){
+        citizen.hp -= missile.damage
+        return true
+    }
+  }
+}
+
+function generateCitizenInterval(){
+  setInterval(function(){
+    gameWorld.citizens.push(newRandomCitizen())
+  }, 500)
+}
+
+function newRandomCitizen() {
+  return new Citizen({
+    x: Math.random() * 800,
+    y: 0,
+    image: "images/female_citizen.gif"
+  })
+}
 
 

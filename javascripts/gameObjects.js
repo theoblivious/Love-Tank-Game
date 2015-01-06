@@ -47,3 +47,15 @@ TankMissile.prototype = {
     }
   }
 }
+
+var Citizen = function(options){
+Renderable.call(this, options);
+  this.speed = Math.random()*2;
+  this.hp = 20;
+}
+
+Citizen.prototype ={
+  move: function(){
+    this.y +=this.speed;
+  }
+}
