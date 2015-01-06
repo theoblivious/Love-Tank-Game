@@ -64,27 +64,41 @@ function setMovementListeners() {
 // so runs a function a rate 60 fps. we throw in the fillRect because it refreshes a new rectangle
 // every frame otherwise there would be a trace of the tank
 function updateCanvasLoop(){
+  updateBackground();
+  updateTank();
+  updateMissiles();
+  updateCitizens();
+  requestAnimationFrame(updateCanvasLoop);
+}
+
+function updateBackground(){
   gameWorld.ctx.fillStyle = "rgb(0,0,0)";
   gameWorld.ctx.fillRect(0, 0, 800, 800);
-  var tank = gameWorld.tank,
-      tempTankMissles = [],
-      tempCitizens = [];
+}
 
+function updateTank(){
+  var tank = gameWorld.tank;
   tank.move()
   tank.render()
+}
 
+function updateMissiles() {
+  var tempTankMissles = [];
 
   for(var i = 0, tankMissile; i < gameWorld.tankMissiles.length; i++){
     tankMissile = gameWorld.tankMissiles[i]
-    if(!checkHit(tankMissile)) {
+    if(!checkHit(tankMissile) && tankMissile.y > -30) {
       tankMissile.move()
       tankMissile.render()
       tempTankMissles.push(tankMissile)
     }
-
   }
+  //reassigning tank missiles array only the missiles that havent hit anything.
   gameWorld.tankMissiles = tempTankMissles
+}
 
+function updateCitizens(){
+  var tempCitizens = [];
   for(var i = 0, citizen; i < gameWorld.citizens.length; i++) {
     citizen = gameWorld.citizens[i]
     if(citizen.hp>0){
@@ -94,9 +108,7 @@ function updateCanvasLoop(){
     }
   }
   gameWorld.citizens = tempCitizens
-  requestAnimationFrame(updateCanvasLoop);
 }
-
 // it checks to see if the missile hits the citizen.  If the citizen hp is zero in the above function,
 // it will stop rendering and moving the citizen. if the missile hits the citizen, it will stop moving and rendering the missile
 function checkHit(missile){
