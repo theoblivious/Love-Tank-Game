@@ -71,6 +71,7 @@ function updateCanvasLoop(){
   requestAnimationFrame(updateCanvasLoop);
 }
 
+//covers the tank trail left behind.
 function updateBackground(){
   gameWorld.ctx.fillStyle = "rgb(0,0,0)";
   gameWorld.ctx.fillRect(0, 0, 800, 800);
@@ -99,6 +100,7 @@ function updateMissiles() {
 
 function updateCitizens(){
   var tempCitizens = [];
+
   for(var i = 0, citizen; i < gameWorld.citizens.length; i++) {
     citizen = gameWorld.citizens[i]
     if(citizen.hp>0){
