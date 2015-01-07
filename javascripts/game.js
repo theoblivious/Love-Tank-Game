@@ -19,7 +19,8 @@ var gameWorld = (function(){
     keysDown: {},
     tank : tank,
     tankMissiles: [],
-    citizens: []
+    citizens: [],
+    score: 0
   };
 
 }());
@@ -107,6 +108,8 @@ function updateCitizens(){
       citizen.move()
       citizen.render()
       tempCitizens.push(citizen)
+    } else {
+      incrementScore()
     }
   }
   gameWorld.citizens = tempCitizens
@@ -124,10 +127,14 @@ function checkHit(missile){
   }
 }
 
+function incrementScore(){
+  gameWorld.score++;
+}
+
 function generateCitizenInterval(){
   setInterval(function(){
     gameWorld.citizens.push(newRandomCitizen())
-  }, 500)
+  }, 50)
 }
 
 function newRandomCitizen() {
