@@ -5,7 +5,7 @@ var gameWorld = (function(){
       ctx = canvas.getContext("2d"),
       tank = new Tank({
           x: 400,
-          y : 730,
+          y : 690,
           image: "images/heroTank.png"
       });
 
@@ -19,7 +19,8 @@ var gameWorld = (function(){
     keysDown: {},
     tank : tank,
     tankMissiles: [],
-    citizens: []
+    citizens: [],
+    score: 0
   };
 
 }());
@@ -60,6 +61,19 @@ function setMovementListeners() {
   })
 }
 
+function generateCitizenInterval(){
+  setInterval(function(){
+    gameWorld.citizens.push(newRandomCitizen())
+  }, 1000)
+}
+
+function newRandomCitizen() {
+  return new Citizen({
+    x: Math.random() * 750,
+    y: 0,
+    image: "images/female_citizen.gif"
+  })
+}
 
 // so runs a function a rate 60 fps. we throw in the fillRect because it refreshes a new rectangle
 // every frame otherwise there would be a trace of the tank
@@ -68,6 +82,7 @@ function updateCanvasLoop(){
   updateTank();
   updateMissiles();
   updateCitizens();
+  updateScoreBox();
   requestAnimationFrame(updateCanvasLoop);
 }
 
@@ -107,10 +122,23 @@ function updateCitizens(){
       citizen.move()
       citizen.render()
       tempCitizens.push(citizen)
+    } else {
+      incrementScore()
     }
   }
   gameWorld.citizens = tempCitizens
 }
+
+function updateScoreBox(){
+  var ctx = gameWorld.ctx
+  ctx.fillStyle = "rgb(255,255,255)";
+  ctx.fillRect(300,750, 200, 50);
+
+  ctx.fillStyle = "rgb(0,0,0)";
+  ctx.font = "45px sans-serif"
+  ctx.fillText(gameWorld.score, 390, 790)
+}
+
 // it checks to see if the missile hits the citizen.  If the citizen hp is zero in the above function,
 // it will stop rendering and moving the citizen. if the missile hits the citizen, it will stop moving and rendering the missile
 function checkHit(missile){
@@ -124,18 +152,10 @@ function checkHit(missile){
   }
 }
 
-function generateCitizenInterval(){
-  setInterval(function(){
-    gameWorld.citizens.push(newRandomCitizen())
-  }, 500)
+function incrementScore(){
+  gameWorld.score++;
 }
 
-function newRandomCitizen() {
-  return new Citizen({
-    x: Math.random() * 800,
-    y: 0,
-    image: "images/female_citizen.gif"
-  })
-}
+
 
 
