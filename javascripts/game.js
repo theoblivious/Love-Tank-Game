@@ -1,16 +1,18 @@
 //setting up the canvas
 
 var gameWorld = (function(){
-  var canvas = document.createElement("canvas"),
-      ctx = canvas.getContext("2d"),
-      tank = new Tank({
+  var canvas = document.createElement("canvas");
+      ctx = canvas.getContext("2d");
+
+  canvas.width = 800;
+  canvas.height = window.innerHeight;
+
+  var tank = new Tank({
           x: 400,
-          y : 690,
+          y : canvas.height - 110,
           image: "images/heroTank.png"
       });
 
-  canvas.width = 800;
-  canvas.height = 800;
 
 //revealing module pattern versus module patterns
   return {
@@ -20,12 +22,13 @@ var gameWorld = (function(){
     tank : tank,
     tankMissiles: [],
     citizens: [],
-    score: 0
+    score: 0,
+    gameOver: false
   };
 
 }());
 
-
+//creating the world
 window.onload = function() {
   createWorld();
   setMovementListeners();
@@ -77,7 +80,13 @@ function newRandomCitizen() {
 
 // so runs a function a rate 60 fps. we throw in the fillRect because it refreshes a new rectangle
 // every frame otherwise there would be a trace of the tank
+//updating the world
 function updateCanvasLoop(){
+  if (gameWorld.gameOver) {
+    displayGameOver()
+    return
+  }
+
   updateBackground();
   updateTank();
   updateMissiles();
@@ -89,7 +98,7 @@ function updateCanvasLoop(){
 //covers the tank trail left behind.
 function updateBackground(){
   gameWorld.ctx.fillStyle = "rgb(0,0,0)";
-  gameWorld.ctx.fillRect(0, 0, 800, 800);
+  gameWorld.ctx.fillRect(0, 0, gameWorld.canvas.width, gameWorld.canvas.height);
 }
 
 function updateTank(){
@@ -118,7 +127,9 @@ function updateCitizens(){
 
   for(var i = 0, citizen; i < gameWorld.citizens.length; i++) {
     citizen = gameWorld.citizens[i]
-    if(citizen.hp>0){
+    if(citizen.y > gameWorld.canvas.height-50) {
+      gameWorld.gameOver = true;
+    } else if(citizen.hp>0){
       citizen.move()
       citizen.render()
       tempCitizens.push(citizen)
@@ -132,11 +143,11 @@ function updateCitizens(){
 function updateScoreBox(){
   var ctx = gameWorld.ctx
   ctx.fillStyle = "rgb(255,255,255)";
-  ctx.fillRect(300,750, 200, 50);
+  ctx.fillRect(300,gameWorld.canvas.height-50, 200, 50);
 
   ctx.fillStyle = "rgb(0,0,0)";
   ctx.font = "45px sans-serif"
-  ctx.fillText(gameWorld.score, 390, 790)
+  ctx.fillText(gameWorld.score, 390, gameWorld.canvas.height - 10)
 }
 
 // it checks to see if the missile hits the citizen.  If the citizen hp is zero in the above function,
@@ -156,6 +167,17 @@ function incrementScore(){
   gameWorld.score++;
 }
 
+function displayGameOver(){
+var ctx = gameWorld.ctx
+ctx.fillStyle = "rgb(255,255,255)";
+ctx.fillRect(300,250, 300, 300);
+
+ctx.fillStyle = "rgb(0,0,0)";
+ctx.font = "30px sans-serif"
+ctx.fillText("Game Over!", 320,400 )
+ctx.fillText("Your score is "+gameWorld.score, 320,450 )
+  // alert("Game Over! Score " + gameWorld.score)
+}
 
 
 
