@@ -54,13 +54,7 @@ function setMovementListeners() {
 
   window.addEventListener("keydown", function(e){
     if(e.keyCode === 32){
-      var tankMissile = new TankMissile({
-        x : gameWorld.tank.x + 20,
-        y : gameWorld.tank.y,
-        image:"images/tankMissile.png"
-      })
-
-      gameWorld.tankMissiles.push(tankMissile)
+      gameWorld.tank.shoot();
     }
   })
 }
@@ -72,11 +66,20 @@ function generateCitizenInterval(){
 }
 
 function newRandomCitizen() {
-  return new Citizen({
-    x: Math.random() * 750,
-    y: 0,
-    image: "images/female_citizen.gif"
-  })
+  var citizen;
+  if (Math.random() < .5){
+    citizen = new FemaleCitizen({
+      x: Math.random() * 750,
+      y: 0
+    })
+  } else {
+    citizen = new FatCitizen({
+      x: Math.random() * 750,
+      y: 0
+    })
+  }
+
+  return citizen
 }
 
 // so runs a function a rate 60 fps. we throw in the fillRect because it refreshes a new rectangle
@@ -84,9 +87,9 @@ function newRandomCitizen() {
 //updating the world
 function updateCanvasLoop(){
   if (gameWorld.gameOver) {
-    stopEnemyInterval()
-    displayGameOver()
-    return
+    stopEnemyInterval();
+    displayGameOver();
+    return;
   }
 
   updateBackground();
