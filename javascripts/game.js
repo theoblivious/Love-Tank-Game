@@ -18,6 +18,7 @@ var gameWorld = (function(){
   return {
     canvas: canvas,
     ctx: ctx,
+    enemyInterval: 0,
     keysDown: {},
     tank : tank,
     tankMissiles: [],
@@ -53,29 +54,32 @@ function setMovementListeners() {
 
   window.addEventListener("keydown", function(e){
     if(e.keyCode === 32){
-      var tankMissile = new TankMissile({
-        x : gameWorld.tank.x + 20,
-        y : gameWorld.tank.y,
-        image:"images/tankMissile.png"
-      })
-
-      gameWorld.tankMissiles.push(tankMissile)
+      gameWorld.tank.shoot();
     }
   })
 }
 
 function generateCitizenInterval(){
-  setInterval(function(){
+  gameWorld.enemyInterval = setInterval(function(){
     gameWorld.citizens.push(newRandomCitizen())
   }, 1000)
 }
 
 function newRandomCitizen() {
-  return new Citizen({
-    x: Math.random() * 750,
-    y: 0,
-    image: "images/female_citizen.gif"
-  })
+  var citizen;
+  if (Math.random() < .5){
+    citizen = new FemaleCitizen({
+      x: Math.random() * 750,
+      y: 0
+    })
+  } else {
+    citizen = new FatCitizen({
+      x: Math.random() * 750,
+      y: 0
+    })
+  }
+
+  return citizen
 }
 
 // so runs a function a rate 60 fps. we throw in the fillRect because it refreshes a new rectangle
@@ -83,8 +87,9 @@ function newRandomCitizen() {
 //updating the world
 function updateCanvasLoop(){
   if (gameWorld.gameOver) {
-    displayGameOver()
-    return
+    stopEnemyInterval();
+    displayGameOver();
+    return;
   }
 
   updateBackground();
@@ -167,17 +172,18 @@ function incrementScore(){
   gameWorld.score++;
 }
 
-function displayGameOver(){
-var ctx = gameWorld.ctx
-ctx.fillStyle = "rgb(255,255,255)";
-ctx.fillRect(300,250, 300, 300);
-
-ctx.fillStyle = "rgb(0,0,0)";
-ctx.font = "30px sans-serif"
-ctx.fillText("Game Over!", 320,400 )
-ctx.fillText("Your score is "+gameWorld.score, 320,450 )
-  // alert("Game Over! Score " + gameWorld.score)
+function stopEnemyInterval() {
+  clearInterval(gameWorld.enemyInterval)
 }
 
+function displayGameOver(){
+  var ctx = gameWorld.ctx
+  ctx.fillStyle = "rgb(255,255,255)";
+  ctx.fillRect(300,250, 300, 300);
 
+  ctx.fillStyle = "rgb(0,0,0)";
+  ctx.font = "30px sans-serif"
+  ctx.fillText("Game Over!", 320,400 )
+  ctx.fillText("Your score is "+gameWorld.score, 320,450 )
+}
 
