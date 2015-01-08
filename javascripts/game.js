@@ -18,6 +18,7 @@ var gameWorld = (function(){
   return {
     canvas: canvas,
     ctx: ctx,
+    enemyInterval: 0,
     keysDown: {},
     tank : tank,
     tankMissiles: [],
@@ -65,7 +66,7 @@ function setMovementListeners() {
 }
 
 function generateCitizenInterval(){
-  setInterval(function(){
+  gameWorld.enemyInterval = setInterval(function(){
     gameWorld.citizens.push(newRandomCitizen())
   }, 1000)
 }
@@ -83,6 +84,7 @@ function newRandomCitizen() {
 //updating the world
 function updateCanvasLoop(){
   if (gameWorld.gameOver) {
+    stopEnemyInterval()
     displayGameOver()
     return
   }
@@ -167,17 +169,18 @@ function incrementScore(){
   gameWorld.score++;
 }
 
-function displayGameOver(){
-var ctx = gameWorld.ctx
-ctx.fillStyle = "rgb(255,255,255)";
-ctx.fillRect(300,250, 300, 300);
-
-ctx.fillStyle = "rgb(0,0,0)";
-ctx.font = "30px sans-serif"
-ctx.fillText("Game Over!", 320,400 )
-ctx.fillText("Your score is "+gameWorld.score, 320,450 )
-  // alert("Game Over! Score " + gameWorld.score)
+function stopEnemyInterval() {
+  clearInterval(gameWorld.enemyInterval)
 }
 
+function displayGameOver(){
+  var ctx = gameWorld.ctx
+  ctx.fillStyle = "rgb(255,255,255)";
+  ctx.fillRect(300,250, 300, 300);
 
+  ctx.fillStyle = "rgb(0,0,0)";
+  ctx.font = "30px sans-serif"
+  ctx.fillText("Game Over!", 320,400 )
+  ctx.fillText("Your score is "+gameWorld.score, 320,450 )
+}
 

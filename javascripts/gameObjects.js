@@ -49,7 +49,7 @@ TankMissile.prototype = {
 }
 
 var Citizen = function(options){
-Renderable.call(this, options);
+  Renderable.call(this, options);
   this.speed = Math.random()*2;
   this.hp = 20;
 }
@@ -59,3 +59,21 @@ Citizen.prototype ={
     this.y +=this.speed;
   }
 }
+
+var FemaleCitizen = function(options) {
+  Citizen.call(this, options)
+  this.hp = 20
+  this.speed = 1.5
+}
+
+FemaleCitizen.prototype = Object.create(Citizen.prototype)
+
+var FatCitizen =function(options){
+  Citizen.call(this ,options)
+  this.hp = 40
+  this.speed = 1
+}
+
+FatCitizen.prototype = Object.create(Citizen.prototype)
+
+
