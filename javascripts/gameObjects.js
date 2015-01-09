@@ -24,21 +24,26 @@ var Tank = function(options){
 Tank.prototype = Object.create(Renderable.prototype)
 // creating behavior so we dont overwrite the prototype
 Tank.prototype.shoot = function(){
-  var tankMissile = new TankMissile({
-    x : gameWorld.tank.x + 20,
-    y : gameWorld.tank.y,
-    image:"images/tankMissile.png"
-  })
-
-  gameWorld.tankMissiles.push(tankMissile)
+  if (!(16 in gameWorld.keysDown)) {
+    var tankMissile = new TankMissile({
+      x : gameWorld.tank.x + 20,
+      y : gameWorld.tank.y,
+      image:"images/tankMissile.png"
+    })
+    gameWorld.tankMissiles.push(tankMissile)
+  }
 }
 
 Tank.prototype.move = function(){
+  var speed = this.speed
+  if (16 in gameWorld.keysDown) {
+    speed += 4
+  }
   if (37 in gameWorld.keysDown && this.x >= 0) { // Player holding left
-    this.x -= this.speed;
+    this.x -= speed;
   }
   if (39 in gameWorld.keysDown && this.x <= 750) { // Player holding right
-    this.x += this.speed;
+    this.x += speed;
   }
 }
 
