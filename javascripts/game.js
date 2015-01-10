@@ -123,7 +123,8 @@ function updateMissiles() {
       tempTankMissles.push(tankMissile)
     }
   }
-  //reassigning tank missiles array only the missiles that havent hit anything.
+  //reassigning tank missiles array only the missiles that havent hit anything and creating a new empty temp array with each
+  //run through
   gameWorld.tankMissiles = tempTankMissles
 }
 

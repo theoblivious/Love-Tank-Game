@@ -5,7 +5,7 @@ Love Tank Game.  Shoot the citizens with love missiles to bring them on your sid
 
 Keys
 ---
-Left and Right: Moves you left and right
+Left and Right: Moves you left and rgight
 
 Space: Shoot
 
