@@ -56,13 +56,13 @@ function setMovementListeners() {
     if(e.keyCode === 32){
       gameWorld.tank.shoot();
     }
-  })
+  });
 }
 
 function generateCitizenInterval(){
   gameWorld.enemyInterval = setInterval(function(){
-    gameWorld.citizens.push(newRandomCitizen())
-  }, 1000)
+    gameWorld.citizens.push(newRandomCitizen());
+  }, 1000);
 }
 
 function newRandomCitizen() {
@@ -71,12 +71,12 @@ function newRandomCitizen() {
     citizen = new FemaleCitizen({
       x: Math.random() * 750,
       y: 0
-    })
+    });
   } else {
     citizen = new FatCitizen({
       x: Math.random() * 750,
       y: 0
-    })
+    });
   }
 
   return citizen
@@ -123,7 +123,8 @@ function updateMissiles() {
       tempTankMissles.push(tankMissile)
     }
   }
-  //reassigning tank missiles array only the missiles that havent hit anything.
+  //reassigning tank missiles array only the missiles that havent hit anything and creating a new empty temp array with each
+  //run through
   gameWorld.tankMissiles = tempTankMissles
 }
 
@@ -173,11 +174,11 @@ function incrementScore(){
 }
 
 function stopEnemyInterval() {
-  clearInterval(gameWorld.enemyInterval)
+  clearInterval(gameWorld.enemyInterval);
 }
 
 function displayGameOver(){
-  var ctx = gameWorld.ctx
+  var ctx = gameWorld.ctx;
   ctx.fillStyle = "rgb(255,255,255)";
   ctx.fillRect(300,250, 300, 300);
 

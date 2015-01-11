@@ -21,7 +21,10 @@ var Tank = function(options){
   this.speed = 3;
 }
 
+//need to recreate Tank constructor because the prototype is
+//being overwritten by Object.create
 Tank.prototype = Object.create(Renderable.prototype)
+Tank.prototype.constructor = Tank;
 // creating behavior so we dont overwrite the prototype
 Tank.prototype.shoot = function(){
   if (!(16 in gameWorld.keysDown)) {
@@ -55,6 +58,7 @@ var TankMissile = function(options){
 }
 
 TankMissile.prototype = Object.create(Renderable.prototype)
+TankMissile.prototype.constructor = TankMissile;
 
 TankMissile.prototype.move = function(){
   if (this.y > -(this.image.height)) {
@@ -65,11 +69,10 @@ TankMissile.prototype.move = function(){
 
 var Citizen = function(options){
   Renderable.call(this, options);
-  this.speed = Math.random()*2;
-  this.hp = 20;
 }
 
 Citizen.prototype = Object.create(Renderable.prototype)
+Citizen.prototype.constructor = Citizen;
 Citizen.prototype.move = function(){
   this.y +=this.speed;
 }
@@ -79,10 +82,11 @@ var FemaleCitizen = function(options) {
   options.image = "images/female_citizen.gif"
   Citizen.call(this, options)
   this.hp = 20
-  this.speed = 1.3
+  this.speed = .3
 }
 
 FemaleCitizen.prototype = Object.create(Citizen.prototype)
+FemaleCitizen.prototype.constructor = FemaleCitizen;
 
 var FatCitizen =function(options){
   options.image = "images/fat_citizen.png"
@@ -93,5 +97,6 @@ var FatCitizen =function(options){
 }
 
 FatCitizen.prototype = Object.create(Citizen.prototype)
+FatCitizen.prototype.constructor = FatCitizen;
 
 
