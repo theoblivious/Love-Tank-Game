@@ -13,7 +13,7 @@ Shift: Speed Boost while holding left and right.
 
 Javascript and HTML5 Game.
 
-To play, open main.html file OR click here
+To play, open index.html file OR click here
 
 http://lovetankgame.bitballoon.com
 
