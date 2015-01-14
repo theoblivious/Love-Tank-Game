@@ -79,24 +79,23 @@ Citizen.prototype.move = function(){
 
 // we have to assign options.image before citizen.call assigns it with the function below
 var FemaleCitizen = function(options) {
-  options.image = "images/female_citizen.gif"
-  Citizen.call(this, options)
-  this.hp = 20
-  this.speed = .3
+  options.image = "images/female_citizen.gif";
+  Citizen.call(this, options);
+  this.hp = 20;
+  this.speed = .3;
 }
 
 FemaleCitizen.prototype = Object.create(Citizen.prototype)
 FemaleCitizen.prototype.constructor = FemaleCitizen;
 
-var FatCitizen =function(options){
-  options.image = "images/fat_citizen.png"
+var MaleCitizen =function(options){
+  options.image = "images/bouncyguy.gif"
   Citizen.call(this ,options)
 
   this.hp = 40
   this.speed = .7
 }
 
-FatCitizen.prototype = Object.create(Citizen.prototype)
-FatCitizen.prototype.constructor = FatCitizen;
-
+MaleCitizen.prototype = Object.create(Citizen.prototype)
+MaleCitizen.prototype.constructor = MaleCitizen;
 

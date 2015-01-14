@@ -15,7 +15,7 @@ Javascript and HTML5 Game.
 
 To play, open main.html file OR click here
 
-lovetankgame.bitballoon.com
+http://lovetankgame.bitballoon.com
 
 TO add:
 

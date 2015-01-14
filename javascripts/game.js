@@ -73,7 +73,7 @@ function newRandomCitizen() {
       y: 0
     });
   } else {
-    citizen = new FatCitizen({
+    citizen = new MaleCitizen({
       x: Math.random() * 750,
       y: 0
     });
